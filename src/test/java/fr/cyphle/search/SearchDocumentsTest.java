@@ -6,9 +6,6 @@ import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 
 import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static fr.cyphle.utils.Helpers.collectionToJsonListParam;
 import static io.gatling.javaapi.core.CoreDsl.StringBody;
@@ -63,20 +60,3 @@ public class SearchDocumentsTest extends Simulation {
             .protocols(httpProtocol);
     }
 }
-
-/*
-I. Doc storage expose un ingress
--> on peut l'appeler directement avec un header Authorizaiton Bearer xxx
-1. exécuter le flow password OAuth2 et récupérer l'access token
-
-II. Remplacer API gateway
-1. exécuter le flow authorization code OAuth2 et récupérer l'access token
-2. appeler doc storage directement
-
-III. Simuler un user
-1. Aller sur platform.stonal-test.io
-2. Gérer la redirection vers sso.stonal-test.io?...
-3. Entrer login + password
-4. Récupérer le cookie de session
-5. Appeler les endpoints que le front appel
- */
