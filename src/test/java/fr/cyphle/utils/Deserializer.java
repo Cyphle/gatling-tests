@@ -1,4 +1,4 @@
-package fr.cyphle;
+package fr.cyphle.utils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

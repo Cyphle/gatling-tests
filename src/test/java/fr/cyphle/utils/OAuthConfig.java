@@ -1,6 +1,6 @@
-package fr.cyphle;
+package fr.cyphle.utils;
 
-public class Config {
+public class OAuthConfig {
     public static final String BASE_URL = "https://platform.stonal-test.io";
     public static final String REDIRECT_URI = "https://platform.stonal-test.io";
     public static final String CLIENT_ID = "powerbi-password-flow";

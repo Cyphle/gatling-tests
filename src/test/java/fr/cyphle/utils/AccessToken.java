@@ -1,4 +1,4 @@
-package fr.cyphle;
+package fr.cyphle.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
