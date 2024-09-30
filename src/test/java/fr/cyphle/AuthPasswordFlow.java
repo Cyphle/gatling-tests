@@ -9,7 +9,9 @@ import io.gatling.javaapi.http.HttpProtocolBuilder;
 import java.util.Base64;
 import java.util.Objects;
 
+import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
+import static io.gatling.javaapi.core.CoreDsl.bodyString;
 import static io.gatling.javaapi.core.CoreDsl.jsonPath;
 import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
@@ -21,7 +23,7 @@ public class AuthPasswordFlow extends Simulation {
     HttpProtocolBuilder httpProtocol = http
         .baseUrl(Config.BASE_URL)
         .acceptHeader("application/json")
-        .contentTypeHeader("application/x-www-form-urlencoded")
+//        .contentTypeHeader("application/x-www-form-urlencoded")
         .userAgentHeader("Mozilla/5.0");
 
     ScenarioBuilder scenario = scenario("OAuth2 Password Flow Scenario")
@@ -37,8 +39,23 @@ public class AuthPasswordFlow extends Simulation {
         )
         .pause(1)
 
+        .exec(http("Search documents")
+            .post("https://api.stonal-test.io/document-storage/organizations/UNOFI/documents/search")
+            .header("Authorization", "Bearer #{accessToken}")
+            .header("Content-type", "application/json")
+            .queryParam("pageNumber", 0)
+            .queryParam("pageSize", 100)
+            .queryParam("sortOrder", "ASC")
+            .queryParam("columnToSort", "identifier")
+            .body(StringBody("{\"documentationIdentifiers\": [\"303ccee5-a5be-445d-99e0-9235c623979b\"]}"))
+            .check(status().is(200))
+            .check(bodyString().saveAs("responseBody"))
+        )
+        .pause(1)
+
         .exec(session -> {
-            System.out.println("Access token: " + session.get("accessToken"));
+            String responseBody = session.getString("responseBody");
+            System.out.println("Response Body: " + responseBody);  // Print the response to console
             return session;
         });
 
