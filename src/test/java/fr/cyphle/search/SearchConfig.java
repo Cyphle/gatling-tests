@@ -2,7 +2,7 @@ package fr.cyphle.search;
 
 import java.util.List;
 
-public class SearchConfig {
+class SearchConfig {
     public static final String BASE_URL = "https://api.stonal-test.io";
     public static final String SEARCH_URL = BASE_URL + "/document-storage/organizations/UNOFI/documents/search";
 

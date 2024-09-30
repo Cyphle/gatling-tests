@@ -7,5 +7,6 @@ This project is to train using Gatling
 
 ## TODO List
 - Create a simple scenario > OK
-- Configure it (parallel run, multiple users, etc)
+- Configure it (parallel run, multiple users, etc) > OK (see doc)
+- Implement authorization code flow
 - Use the recorder https://docs.gatling.io/reference/script/protocols/http/recorder/
