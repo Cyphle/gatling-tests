@@ -7,8 +7,10 @@ import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 
 import java.util.Base64;
+import java.util.Objects;
 
 import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
+import static io.gatling.javaapi.core.CoreDsl.jsonPath;
 import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
@@ -31,19 +33,18 @@ public class AuthPasswordFlow extends Simulation {
             .formParam("username", Config.USERNAME)
             .formParam("password", Config.PASSWORD)
             .check(status().is(200))
-            .transformResponse((response, session) -> {
-                var accessToken = deserializer.readValue(response.body().string(), AccessToken.class);
-                System.out.println(accessToken);
-                return response;
-            })
+            .check(jsonPath("$.access_token").saveAs("accessToken"))
         )
-        .pause(1);
+        .pause(1)
+
+        .exec(session -> {
+            System.out.println("Access token: " + session.get("accessToken"));
+            return session;
+        });
 
     {
-        // Define the load simulation
-        setUp(
-            scenario.injectOpen(atOnceUsers(1))  // Start with 1 user for testing purposes
-        ).protocols(httpProtocol);
+        setUp(scenario.injectOpen(atOnceUsers(1)))
+            .protocols(httpProtocol);
     }
 }
 
