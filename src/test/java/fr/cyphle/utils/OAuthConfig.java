@@ -9,7 +9,6 @@ public class OAuthConfig {
     // /realms/stonal/protocol/openid-connect/auth
     public static final String TOKEN_URL = OIDC + "/realms/stonal/protocol/openid-connect/token";
 
-    // TODO ce client n'est pas auth code mais password
     public static final String CLIENT_ID = "powerbi-password-flow";
     public static final String CLIENT_SECRET = "D7gsFJbYgQ5cs8mqYi7J5YPTW8cSFIyD";
     public static final String SCOPE = "openid profile user";
