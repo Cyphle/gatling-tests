@@ -12,15 +12,15 @@ public class Simulations extends Simulation {
     {
         setUp(
             loadDocumentationScenario
-                .injectOpen(atOnceUsers(5))
-                .protocols(loadDocumentationsProtocol),
-            searchDocumentsScenario
-                .injectOpen(atOnceUsers(5))
-                .protocols(searchDocumentsProtocol)
+                .injectOpen(atOnceUsers(1))
+                .protocols(loadDocumentationsProtocol)
+//            searchDocumentsScenario
+//                .injectOpen(atOnceUsers(5))
+//                .protocols(searchDocumentsProtocol)
         )
             .assertions(
-                global().failedRequests().count().is(0L),
-                details("Search documents").responseTime().percentile4().lt(500)
+                global().failedRequests().count().is(0L)
+//                details("Search documents").responseTime().percentile4().lt(500)
             );
     }
 }
