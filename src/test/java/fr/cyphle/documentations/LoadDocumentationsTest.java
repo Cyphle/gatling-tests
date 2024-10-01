@@ -5,31 +5,29 @@ import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 
-import java.util.Base64;
+import static io.gatling.javaapi.core.CoreDsl.*;
+import static io.gatling.javaapi.http.HttpDsl.*;
 
-import static io.gatling.javaapi.core.CoreDsl.jsonPath;
-import static io.gatling.javaapi.core.CoreDsl.scenario;
-import static io.gatling.javaapi.http.HttpDsl.http;
-import static io.gatling.javaapi.http.HttpDsl.status;
-
-public class LoadDocumentationsTest extends Simulation {
-    HttpProtocolBuilder httpProtocol = http
+public class LoadDocumentationsTest {
+    public static HttpProtocolBuilder loadDocumentationsProtocol = http
         .baseUrl(OAuthConfig.BASE_URL)
         .acceptHeader("application/json")
         .userAgentHeader("Mozilla/5.0");
 
-    ScenarioBuilder scenario = scenario("Search documents")
-        .exec(http("Request Token from password flow")
-            .post(OAuthConfig.TOKEN_URL)
+    public static ScenarioBuilder loadDocumentationScenario = scenario("Load documentations")
+        .exec(http("Request Token from authorization code flow")
+            .get(OAuthConfig.BASE_URL)
             .asFormUrlEncoded()
-            .header("Authorization", "Basic " + Base64.getEncoder().encodeToString((OAuthConfig.CLIENT_ID + ":" + OAuthConfig.CLIENT_SECRET).getBytes()))
-            .formParam("grant_type", "password")
-            .formParam("username", OAuthConfig.USERNAME)
-            .formParam("password", OAuthConfig.PASSWORD)
             .check(status().is(200))
-            .check(jsonPath("$.access_token").saveAs("accessToken"))
+            .check(header("Location").saveAs("redirection"))
         )
         .pause(1)
+
+        .exec(session -> {
+            System.out.printf("Redirection: " + session.getString("redirection"));
+            return session;
+        });
+
     /*
     III. Simuler un user
 1. Aller sur platform.stonal-test.io

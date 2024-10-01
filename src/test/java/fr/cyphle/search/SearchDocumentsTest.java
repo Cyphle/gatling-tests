@@ -2,28 +2,22 @@ package fr.cyphle.search;
 
 import fr.cyphle.utils.OAuthConfig;
 import io.gatling.javaapi.core.ScenarioBuilder;
-import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 
 import java.util.Base64;
 
 import static fr.cyphle.utils.Helpers.collectionToJsonListParam;
-import static io.gatling.javaapi.core.CoreDsl.StringBody;
-import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
-import static io.gatling.javaapi.core.CoreDsl.details;
-import static io.gatling.javaapi.core.CoreDsl.global;
-import static io.gatling.javaapi.core.CoreDsl.jsonPath;
-import static io.gatling.javaapi.core.CoreDsl.scenario;
+import static io.gatling.javaapi.core.CoreDsl.*;
 import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
-public class SearchDocumentsTest extends Simulation {
-    HttpProtocolBuilder httpProtocol = http
+public class SearchDocumentsTest {
+    public static HttpProtocolBuilder searchDocumentsProtocol = http
         .baseUrl(OAuthConfig.BASE_URL)
         .acceptHeader("application/json")
         .userAgentHeader("Mozilla/5.0");
 
-    ScenarioBuilder scenario = scenario("Search documents")
+    public static ScenarioBuilder searchDocumentsScenario = scenario("Search documents")
         .exec(http("Request Token from password flow")
             .post(OAuthConfig.TOKEN_URL)
             .asFormUrlEncoded()
@@ -56,14 +50,4 @@ public class SearchDocumentsTest extends Simulation {
             return session;
         });
 
-    {
-        setUp(scenario.injectOpen(
-            atOnceUsers(5)
-        ))
-            .protocols(httpProtocol)
-            .assertions(
-                global().failedRequests().count().is(0L),
-                details("Search documents").responseTime().percentile4().lt(500)
-            );
-    }
 }

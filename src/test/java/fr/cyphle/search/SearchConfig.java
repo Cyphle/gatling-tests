@@ -2,8 +2,9 @@ package fr.cyphle.search;
 
 import java.util.List;
 
+import static fr.cyphle.utils.OAuthConfig.BASE_URL;
+
 class SearchConfig {
-    public static final String BASE_URL = "https://api.stonal-test.io";
     public static final String SEARCH_URL = BASE_URL + "/document-storage/organizations/UNOFI/documents/search";
 
     public static final int PAGE_NUMBER = 0;
