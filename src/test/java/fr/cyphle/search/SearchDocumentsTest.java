@@ -21,7 +21,7 @@ public class SearchDocumentsTest {
         .exec(http("Request Token from password flow")
             .post(OAuthConfig.TOKEN_URL)
             .asFormUrlEncoded()
-            .header("Authorization", "Basic " + Base64.getEncoder().encodeToString((OAuthConfig.CLIENT_ID + ":" + OAuthConfig.CLIENT_SECRET).getBytes()))
+            .header("Authorization", "Basic " + Base64.getEncoder().encodeToString((OAuthConfig.PASSWORD_FLOW_CLIENT_ID + ":" + OAuthConfig.PASSWORD_FLOW_CLIENT_SECRET).getBytes()))
             .formParam("grant_type", "password")
             .formParam("username", OAuthConfig.USERNAME)
             .formParam("password", OAuthConfig.PASSWORD)
